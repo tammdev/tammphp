@@ -2,12 +2,22 @@
 
 namespace Tamm\Core;
 
+require_once(__DIR__.'/application.php');
+
+// The only way we can get an object from Bootstrap class
+// by the method build inside the Application class.
 class Bootstrap
 {
+    private Application $application;
+    private Container $container;
 
-    function __construct()
+    public function __construct(Application $application)
     {
         $this->loadCoreFiles(__DIR__);
+        $this->loadCoreFiles(__DIR__.'/../middlewares/');
+        //
+        $this->application  = $application;
+        $this->container    = new Container($application);
     }
 
     private function loadCoreFiles($dir) {
@@ -20,14 +30,24 @@ class Bootstrap
             $path = $dir . '/' . $file;
             
             if (is_dir($path)) {
-                loadCoreFiles($path);
+                $this->loadCoreFiles($path);
             } elseif (is_file($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
                 require_once $path;
             }
         }
     }
 
-    public function handleHttpRequest(Container $container){
+    //
+    public function getContainer(){
+        return $this->container;
+    }
+
+    //
+    public function getApplication(){
+        return $this->application;
+    }
+
+    public function handleHttpRequest(){
 
         // Parse the incoming HTTP request and create an instance of the HttpRequest class
         
@@ -56,7 +76,8 @@ class Bootstrap
         $request = new HttpRequest($method, $uri, $headers, $body, $params);
     
         //
-        $container->set('Tamm\Core\HttpRequest',$request);
+        // $this->container->set('Tamm\Core\HttpRequest',$request);
+        $this->container->set($request);
     
     
         // // Now you can access the different components of the request using the methods provided by the HttpRequest class

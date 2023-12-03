@@ -1,12 +1,18 @@
 <?php
 
-return [
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => 'your_database_name',
-    'username' => 'your_username',
-    'password' => 'your_password',
-    'charset' => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix' => 'tm_',
-];
+$configurations = array(
+    'root_path' => '/tammphp/', // '/'
+    'middlewares' => array(
+        'Tamm\Middleware\LoggingMiddleware',
+    ),
+    'database' => array(
+        'driver' => 'mysql',
+        'host' => 'localhost',
+        'database' => 'your_database_name',
+        'username' => 'your_username',
+        'password' => 'your_password',
+        'charset' => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix' => 'tm_',
+    ),
+);

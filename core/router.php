@@ -21,7 +21,8 @@ class Router
             $this->modules[$moduleName] = $module['path'];
 
             // Trigger 'module.registered' event
-            $this->event->trigger('module.registered', ['moduleName' => $moduleName]);
+            // TODO 
+            $this->events[0]->trigger('module.registered', ['moduleName' => $moduleName]);
         }
     }
 
@@ -53,6 +54,7 @@ class Router
 
     public function subscribeToEvent($event, $listener)
     {
-        $this->event->subscribe($event, $listener);
+        // TODO
+        $this->events[0]->subscribe($event, $listener);
     }
 }

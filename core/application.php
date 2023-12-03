@@ -10,24 +10,34 @@ use Tamm\Core\Container;
 class Application {
 
     //
-    private $bootstrap;
+    public const VERSION = "1.0.0";
     //
-    private $container;
+    private static Bootstrap $bootstrap;
     //
-    private $router;
-
-
-
+    private static Container $container;
     //
-    private $middlewareStack = [];
-
+    private Router $router;
     //
-    public function __construct()
+    private $configuration;
+    //
+    private $middlewares = [];
+
+    // The only way we can get an object from Application class
+    // by the method build().
+    private function __construct($configuration = array())
     {
-        // echo __FUNCTION__;
-        $this->bootstrap  = new Bootstrap();
-        $this->container  = new Container();
-        $this->router     = new Router();
+        $this->configuration    = $configuration;
+        // $this->bootstrap        = new Bootstrap();
+        // $this->container        = new Container();
+        // //
+        // $this->container->set('Tamm\Core\Router',new Router());
+        // // $this->middlewares      = $configuration['middlewares'];
+    }
+
+    public static function build($configuration = array()){
+        self::$bootstrap = new Bootstrap(new self($configuration));
+        self::$container = self::$bootstrap->getContainer();
+        return self::$bootstrap->getApplication();
     }
 
     //
@@ -35,65 +45,78 @@ class Application {
         return $this->container;
     }
 
-    public function addMiddleware(IMiddleware $middleware) {
-        $this->middlewareStack[] = $middleware;
+    //
+    public function getBasePath(){
+        // return __DIR__.'/';
+        $filePath = debug_backtrace()[0]['file']; // Get the current file path
+        $basePath = dirname($filePath); // Extract the directory path
+        return $basePath.'/';
     }
 
-    /*
-    public function handleHttpRequest(HttpRequest $HttpRequest) {
+    //
+    public function getRootPath(){
+        return $this->configuration['root_path'];
+    }
+
+    public function addMiddleware(IMiddleware $middleware) {
+        $this->middlewares[] = $middleware;
+    }
+
+    public function handleRequest(HttpRequest $request) {
         // Create a closure representing the final application logic
-        $applicationLogic = function (HttpRequest $HttpRequest) {
-            // Process the HttpRequest and generate a response
-            // @TODO
-            $statusCode = 200; 
-            $headers = array(); 
-            $body = "";
-            $response = new HttpResponse($statusCode, $headers, $body);
+        $applicationLogic = function (HttpRequest $request) {
+            // Process the request and generate a response
+            $response = new HttpResponse(200,array(),"Hellow");
             return $response;
         };
 
         // Build the middleware stack in reverse order
-        $middlewareStack = array_reverse($this->middlewareStack);
+        $middlewares = array_reverse($this->middlewares);
 
         // Wrap the application logic with each middleware in the stack
-        foreach ($middlewareStack as $middleware) {
-            $applicationLogic = function (HttpRequest $HttpRequest) use ($middleware, $applicationLogic) {
-                return $middleware->process($HttpRequest, $applicationLogic);
+        foreach ($middlewares as $middleware) {
+            $applicationLogic = function (HttpRequest $request) use ($middleware, $applicationLogic) {
+                return $middleware->process($request, $applicationLogic);
             };
         }
 
-        // Start the HttpRequest processing with the outermost middleware
-        $response = $applicationLogic($HttpRequest);
+        // Start the request processing with the outermost middleware
+        $response = $applicationLogic($request);
 
         // Return the final response
         return $response;
     }
-    */
 
     public function run(){
-        $this->bootstrap->handleHttpRequest($this->container);
+        self::$bootstrap->handleHttpRequest(self::$container);
 
         // Create a closure representing the final application logic
-        $applicationLogic = function (HttpRequest $HttpRequest) {
+        $applicationLogic = function (HttpRequest $httpRequest) {
             // Process the HttpRequest and generate a response
             // @TODO
             $statusCode = 200; 
             $headers = array(); 
             $body = "Test the request";
             $response = new HttpResponse($statusCode, $headers, $body);
-            $response->setHeader('X-Framework','TammPHP');
+            $response->setHeader('X-Framework','TammPHP '.self::VERSION);
             return $response;
         };
-        // Build the middleware stack in reverse order
-        $middlewareStack = array_reverse($this->middlewareStack);
-        // Wrap the application logic with each middleware in the stack
-        foreach ($middlewareStack as $middleware) {
-            $applicationLogic = function (HttpRequest $HttpRequest) use ($middleware, $applicationLogic) {
-                return $middleware->process($HttpRequest, $applicationLogic);
-            };
-        }
+        // // Build the middleware stack in reverse order
+        // $middlewareStack = array_reverse($this->middlewareStack);
+        // // print_r($middlewareStack);
+        // // Wrap the application logic with each middleware in the stack
+        // foreach ($middlewareStack as $_middleware) {
+        //     $middleware = new $_middleware();
+        //     $closure = new Closure([$middleware, 'process']);
+        //     // Using the Closure instance in the framework
+        //     $this->addMiddleware($closure);
+
+        //     $applicationLogic = function (HttpRequest $HttpRequest) use ($middleware, $applicationLogic) {
+        //         return $middleware->process($HttpRequest, $applicationLogic);
+        //     };
+        // }
         // Start the HttpRequest processing with the outermost middleware
-        $response = $applicationLogic($this->container->get('Tamm\Core\HttpRequest'));
+        $response = $applicationLogic(self::$container->get('Tamm\Core\HttpRequest'));
 
         // Return the final response
         return $response;

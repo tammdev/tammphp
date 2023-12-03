@@ -2,7 +2,7 @@
 
 namespace Tamm\Core;
 
-class Controller
+abstract class Controller
 {
     protected $view;
 

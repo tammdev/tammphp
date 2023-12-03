@@ -1,22 +1,25 @@
 <?php
 
-require_once('configuration.php');
-require_once('core/application.php');
+require_once(__DIR__.'/configuration.php');
+require_once(__DIR__.'/core/application.php');
 
 use Tamm\Core\Application;
 
-$app = new Application();
-$container = $app->getContainer();
+$app = Application::build($configurations);
 
-
+// $container = $app->getContainer();
 
 $response = $app->run();
 
+// $request = $container->get('Tamm\Core\HttpRequest');
+//
+$response->send();
+echo $app->getBasePath();
+echo $app->getRootPath();
 
-$request = $container->get('Tamm\Core\HttpRequest');
-//
-echo $response->send();
-//
-echo '<pre>';
-print_r($request);
-echo '</pre>';
+
+
+// //
+// echo '<pre>';
+// var_dump($request);
+// echo '</pre>';

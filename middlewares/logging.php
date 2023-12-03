@@ -1,8 +1,11 @@
 <?php
 
+namespace Tamm\Middleware;
+
 use Tamm\Core\HttpRequest;
 use Tamm\Core\IMiddleware;
 use Tamm\Core\Closure;
+use Tamm\Core\Log;
 
 class LoggingMiddleware implements IMiddleware {
     public function process(HttpRequest $request, Closure $next) {
