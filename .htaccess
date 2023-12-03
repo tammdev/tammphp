@@ -1,4 +1,16 @@
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+
+
+## Deny access to the "private" folder
+#RewriteRule ^private/ - [R=403,L]
+
+# Allow access to CSS, PNG, JS, and other files from the "assets" folder
+RewriteRule ^assets/ - [L]
+# Allow access to any files in the "public" folder
+RewriteRule ^public/ - [L]
+
+## Redirect all requests to index.php except for existing files and directories
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+##RewriteRule ^private/(.*)$ index.php [L]
 RewriteRule ^(.*)$ index.php?$1 [QSA,L]
