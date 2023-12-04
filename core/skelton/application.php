@@ -1,13 +1,19 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Skelton;
 
 require_once(__DIR__.'/bootstrap.php');
 
-use Tamm\Core\Bootstrap;
-use Tamm\Core\Container;
-use Tamm\Core\Orienter;
+use Tamm\Core\Skelton\Bootstrap;
+use Tamm\Core\Skelton\Container;
+use Tamm\Core\Skelton\Orienter;
 
+/**
+ * Class Application
+ *
+ * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
+ * @package Tamm\Core\Skelton
+ */
 class Application {
 
     //

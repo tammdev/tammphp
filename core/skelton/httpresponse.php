@@ -1,7 +1,13 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Skelton;
 
+/**
+ * Class HttpResponse
+ *
+ * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
+ * @package Tamm\Core\Skelton
+ */
 class HttpResponse
 {
     private $statusCode;

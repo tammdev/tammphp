@@ -1,7 +1,14 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Skelton;
 
+
+/**
+ * Class Closure
+ *
+ * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
+ * @package Tamm\Core\Skelton
+ */
 class Closure {
     private $callable;
 

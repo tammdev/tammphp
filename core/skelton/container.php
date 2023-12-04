@@ -1,9 +1,13 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Skelton;
 
-use ReflectionClass;
-
+/**
+ * Class Container
+ *
+ * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
+ * @package Tamm\Core\Skelton
+ */
 class Container
 {
     protected $bindings = [];
@@ -18,7 +22,7 @@ class Container
 
     public function set($object) 
     {
-        $reflectionClass = new ReflectionClass($object);
+        $reflectionClass = new \ReflectionClass($object);
         $className = $reflectionClass->getName();
         // echo $className; exit;
         if (!isset($this->instances[$className])) {

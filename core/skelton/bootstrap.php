@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Skelton;
 
 require_once(__DIR__.'/application.php');
 
@@ -8,6 +8,13 @@ use Tamm\Core\Annotations\RestControllerAnnotationHandler;
 
 // The only way we can get an object from Bootstrap class
 // by the method build inside the Application class.
+
+/**
+ * Class Bootstrap
+ *
+ * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
+ * @package Tamm\Core\Skelton
+ */
 class Bootstrap
 {
     private Application $application;

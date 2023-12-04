@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Skelton;
 
 /*
 class Router
