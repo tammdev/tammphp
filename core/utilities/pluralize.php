@@ -1,5 +1,7 @@
 <?php
 
+namespace Tamm\Core\Utilities;
+
 class Pluralizer
 {
     public static function pluralize($noun)
