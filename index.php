@@ -30,9 +30,9 @@ $response->send();
 // print_r($apps);
 // echo "</pre>";
 
-require_once('a.php');
-require_once('b.php');
-require_once('c.php');
+// require_once('a.php');
+// require_once('b.php');
+// require_once('c.php');
 
 // use MyApp\Core\A;
 // use MyApp\Core\B;
@@ -43,12 +43,12 @@ require_once('c.php');
 // var_dump($request);
 // echo '</pre>';
 
-$as = array();
-$as[] = new MyApp\Core\A();
-$as[] = new MyApp\Core\B();
-$as[] = new MyCustomApp\Core\A();
+// $as = array();
+// $as[] = new MyApp\Core\A();
+// $as[] = new MyApp\Core\B();
+// $as[] = new MyCustomApp\Core\A();
 
-$myCollection = new Collection(new \MyApp\Core\A());
-$myCollection->add(new \MyApp\Core\A());
-// $myCollection->add(new \MyApp\Core\B());
+// $myCollection = new Collection(new \MyApp\Core\A());
+// $myCollection->add(new \MyApp\Core\A());
+// // $myCollection->add(new \MyApp\Core\B());
 
