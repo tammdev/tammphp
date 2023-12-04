@@ -1,0 +1,7 @@
+zfolder/
+
+.idea
+vendor
+composer.lock
+.env
+.vscode
