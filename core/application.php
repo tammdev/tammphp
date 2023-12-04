@@ -6,6 +6,7 @@ require_once(__DIR__.'/bootstrap.php');
 
 use Tamm\Core\Bootstrap;
 use Tamm\Core\Container;
+use Tamm\Core\Orienter;
 
 class Application {
 
@@ -16,7 +17,7 @@ class Application {
     //
     private static Container $container;
     //
-    private Router $router;
+    private Orienter $orinter;
     //
     private $configuration;
     //
@@ -37,6 +38,11 @@ class Application {
     public static function build($configuration = array()){
         self::$bootstrap = new Bootstrap(new self($configuration));
         self::$container = self::$bootstrap->getContainer();
+
+        //
+        self::$container->set(new Orienter());
+
+        //
         return self::$bootstrap->getApplication();
     }
 
@@ -88,6 +94,7 @@ class Application {
     }
 
     public function run(){
+        self::$bootstrap->loadControllersFromModules();
         self::$bootstrap->handleHttpRequest(self::$container);
 
         // Create a closure representing the final application logic

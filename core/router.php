@@ -2,6 +2,7 @@
 
 namespace Tamm\Core;
 
+/*
 class Router
 {
     protected $routes = [];
@@ -58,3 +59,5 @@ class Router
         $this->events[0]->subscribe($event, $listener);
     }
 }
+*/
+

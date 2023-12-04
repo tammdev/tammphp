@@ -4,6 +4,8 @@ namespace Tamm\Core;
 
 require_once(__DIR__.'/application.php');
 
+use Tamm\Core\Annotations\RestControllerAnnotationHandler;
+
 // The only way we can get an object from Bootstrap class
 // by the method build inside the Application class.
 class Bootstrap
@@ -47,6 +49,22 @@ class Bootstrap
         return $this->application;
     }
 
+    //
+    public function loadControllersFromModules() {
+        $path = "modules";
+        $modulesPath = rtrim($path, '/') . '/';
+        $modules = glob($modulesPath . '*', GLOB_ONLYDIR);
+    
+        foreach ($modules as $module) {
+            $moduleControllersPath = $module . '/controllers';
+            $controllers = glob($moduleControllersPath . '/*_controller.php');
+    
+            foreach ($controllers as $controller) {
+                require_once $controller;
+            }
+        }
+    }
+
     public function handleHttpRequest(){
 
         // Parse the incoming HTTP request and create an instance of the HttpRequest class
@@ -78,6 +96,9 @@ class Bootstrap
         //
         // $this->container->set('Tamm\Core\HttpRequest',$request);
         $this->container->set($request);
+
+        //
+        $this->container->set(new RestControllerAnnotationHandler());
     
     
         // // Now you can access the different components of the request using the methods provided by the HttpRequest class

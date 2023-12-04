@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Core;
+namespace Tamm\Core\Logger;
 
 class Log {
     public static function info($message) {
