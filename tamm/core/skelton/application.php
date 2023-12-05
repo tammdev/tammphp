@@ -7,6 +7,8 @@ require_once(__DIR__.'/bootstrap.php');
 use Tamm\Core\Skelton\Bootstrap;
 use Tamm\Core\Skelton\Container;
 use Tamm\Core\Skelton\Orienter;
+use Tamm\Core\Skelton\HttpRequest;
+use Tamm\Core\Skelton\HttpResponse;
 
 /**
  * Class Application
@@ -18,6 +20,10 @@ class Application {
 
     //
     public const VERSION = "1.0.0";
+    // "/var/www/html/tammphp/"
+    public string $rootPath;
+    // "/tammphp/" or just "/"
+    public string $basePath;
     //
     private static Bootstrap $bootstrap;
     //
@@ -33,11 +39,18 @@ class Application {
     // by the method build().
     private function __construct($configuration = array())
     {
-        $this->configuration    = $configuration;
+
+        $this->configuration       = $configuration;
+
+        $dir = dirname(__DIR__);
+        $this->basePath = $configuration['base_path'];
+        $path = explode($this->basePath, $dir);
+        $this->rootPath = $path[0].$this->basePath;
+        
         // $this->bootstrap        = new Bootstrap();
         // $this->container        = new Container();
         // //
-        // $this->container->set('Tamm\Core\Router',new Router());
+        // $this->container->set(new Router());
         // // $this->middlewares      = $configuration['middlewares'];
     }
 
@@ -59,15 +72,12 @@ class Application {
 
     //
     public function getBasePath(){
-        // return __DIR__.'/';
-        $filePath = debug_backtrace()[0]['file']; // Get the current file path
-        $basePath = dirname($filePath); // Extract the directory path
-        return $basePath.'/';
+        return $this->basePath;
     }
 
     //
     public function getRootPath(){
-        return $this->configuration['root_path'];
+        return $this->rootPath;
     }
 
     public function addMiddleware(IMiddleware $middleware) {
@@ -103,33 +113,26 @@ class Application {
         self::$bootstrap->loadControllersFromModules();
         self::$bootstrap->handleHttpRequest(self::$container);
 
-        // Create a closure representing the final application logic
-        $applicationLogic = function (HttpRequest $httpRequest) {
-            // Process the HttpRequest and generate a response
-            // @TODO
-            $statusCode = 200; 
-            $headers = array(); 
-            $body = "Test the request";
-            $response = new HttpResponse($statusCode, $headers, $body);
-            $response->setHeader('X-Framework','TammPHP '.self::VERSION);
-            return $response;
-        };
-        // // Build the middleware stack in reverse order
-        // $middlewareStack = array_reverse($this->middlewareStack);
-        // // print_r($middlewareStack);
-        // // Wrap the application logic with each middleware in the stack
-        // foreach ($middlewareStack as $_middleware) {
-        //     $middleware = new $_middleware();
-        //     $closure = new Closure([$middleware, 'process']);
-        //     // Using the Closure instance in the framework
-        //     $this->addMiddleware($closure);
+        // // Create a closure representing the final application logic
+        // $applicationLogic = function (HttpRequest $httpRequest) {
+        //     // Process the HttpRequest and generate a response
+        //     // @TODO
+        //     $statusCode = 200; 
+        //     $headers = array(); 
+        //     $body = "Test the request";
+        //     $response = new HttpResponse($statusCode, $headers, $body);
+        //     $response->setHeader('X-Framework','TammPHP '.self::VERSION);
+        //     return $response;
+        // };
+        // // Start the HttpRequest processing with the outermost middleware
+        // $response = $applicationLogic(self::$container->get(HttpRequest::class));
+        
 
-        //     $applicationLogic = function (HttpRequest $HttpRequest) use ($middleware, $applicationLogic) {
-        //         return $middleware->process($HttpRequest, $applicationLogic);
-        //     };
-        // }
-        // Start the HttpRequest processing with the outermost middleware
-        $response = $applicationLogic(self::$container->get('Tamm\Core\HttpRequest'));
+        // $response = self::$container->get(HttpRequest::class);
+        $statusCode = 200; 
+        $headers = array(); 
+        $body = "Test the request";
+        $response = new HttpResponse($statusCode, $headers, $body);
 
         // Return the final response
         return $response;

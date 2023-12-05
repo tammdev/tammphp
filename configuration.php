@@ -1,7 +1,7 @@
 <?php
 
 $configurations = array(
-    'root_path' => '/tammphp/', // '/'
+    'base_path' => '/tammphp/', // '/'
     'middlewares' => array(
         'Tamm\Middleware\LoggingMiddleware',
     ),
@@ -15,4 +15,6 @@ $configurations = array(
         'collation' => 'utf8_unicode_ci',
         'prefix' => 'tm_',
     ),
+    'theme' => 'assas',
+    'modules' => array('account','l10n')
 );

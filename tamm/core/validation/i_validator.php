@@ -2,7 +2,7 @@
 
 namespace Tamm\Core\Validation;
 
-interface Validator{
+interface IValidator{
     public function getName() : string;
     public function validate() : bool;
 }

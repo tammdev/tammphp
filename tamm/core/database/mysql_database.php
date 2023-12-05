@@ -5,7 +5,7 @@ namespace Tamm\Core\Database;
 use Exception;
 use mysqli;
 
-class MySQLDatabase implements DatabaseInterface
+class MysqlDatabase implements DatabaseInterface
 {
     private DatabaseConnectionInfo $connectionInfo;
     private $connection;

@@ -3,7 +3,7 @@
 namespace Tamm\Core\Database;
 
 
-class SQLServerDatabase implements DatabaseInterface
+class SqlserverDatabase implements DatabaseInterface
 {
     private DatabaseConnectionInfo $connectionInfo;
     private $connection;

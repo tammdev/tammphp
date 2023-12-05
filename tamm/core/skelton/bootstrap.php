@@ -2,9 +2,12 @@
 
 namespace Tamm\Core\Skelton;
 
-require_once(__DIR__.'/application.php');
+// require_once(__DIR__.'/application.php');
 
 use Tamm\Core\Annotations\RestControllerAnnotationHandler;
+
+use Tamm\Core\Skelton\Application;
+use Tamm\Core\Skelton\Container;
 
 // The only way we can get an object from Bootstrap class
 // by the method build inside the Application class.
@@ -22,29 +25,53 @@ class Bootstrap
 
     public function __construct(Application $application)
     {
-        $this->loadCoreFiles(__DIR__);
-        $this->loadCoreFiles(__DIR__.'/../middlewares/');
+        // add a new autoloader by passing a callable into spl_autoload_register()
+        spl_autoload_register([__CLASS__, 'autoloader']);
+        // $this->loadCoreFiles(__DIR__);
+        // $this->loadCoreFiles(__DIR__.'/../middlewares/');
         //
         $this->application  = $application;
         $this->container    = new Container($application);
     }
 
-    private function loadCoreFiles($dir) {
-        $files = scandir($dir);
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
-                continue;
-            }
-            
-            $path = $dir . '/' . $file;
-            
-            if (is_dir($path)) {
-                $this->loadCoreFiles($path);
-            } elseif (is_file($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
-                require_once $path;
-            }
+    /**
+     * Function autoloader
+     *
+     * @param $class_name - String name for the class that is trying to be loaded.
+     */
+    public static function autoloader( $className ){
+        // echo $className.'<br>';
+        $className = self::classToFileName($className);
+        // echo $className.'<br>';
+        $file = $className.'.php';
+        // echo $file.'<br>';
+        if ( file_exists($file) ) {
+            require_once $file;
         }
     }
+
+    public static function classToFileName($className) {
+        $snakeCase = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $className));
+        $snakeCase = str_replace("\\_","/",$snakeCase);
+        return $snakeCase;
+    }
+
+    // private function loadCoreFiles($dir) {
+    //     $files = scandir($dir);
+    //     foreach ($files as $file) {
+    //         if ($file === '.' || $file === '..') {
+    //             continue;
+    //         }
+            
+    //         $path = $dir . '/' . $file;
+            
+    //         if (is_dir($path)) {
+    //             $this->loadCoreFiles($path);
+    //         } elseif (is_file($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
+    //             require_once $path;
+    //         }
+    //     }
+    // }
 
     //
     public function getContainer(){
@@ -101,7 +128,6 @@ class Bootstrap
         $request = new HttpRequest($method, $uri, $headers, $body, $params);
     
         //
-        // $this->container->set('Tamm\Core\HttpRequest',$request);
         $this->container->set($request);
 
         //

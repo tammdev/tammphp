@@ -2,7 +2,7 @@
 
 namespace Tamm\Core\Database;
 
-class MongoDBDatabase implements DatabaseInterface
+class MongodbDatabase implements DatabaseInterface
 {
 
     private DatabaseConnectionInfo $connectionInfo;
