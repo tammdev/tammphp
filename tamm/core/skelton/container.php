@@ -2,6 +2,8 @@
 
 namespace Tamm\Core\Skelton;
 
+use Tamm\Application;
+
 /**
  * Class Container
  *

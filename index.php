@@ -1,20 +1,24 @@
 <?php
 
 require_once(__DIR__.'/configuration.php');
-require_once(__DIR__.'/tamm/core/skelton/application.php');
+require_once(__DIR__.'/tamm/application.php');
 
-use Tamm\Core\Skelton\Application;
-// use Tamm\Core\HttpRequest;
-// use Tamm\Core\HttpResponse;
+use Tamm\Application;
+// use Tamm\Core\Skelton\Container;
+use Tamm\Core\Skelton\HttpRequest;
+// use Tamm\Core\Skelton\HttpResponse;
 // use Tamm\Core\Utilities\Collection;
 
 $app = Application::build($configurations);
 
-// $container = $app->getContainer();
+$container = Application::getContainer();
+
+print_r($container);
 
 $response = $app->run();
 
-// $request = $container->get(HttpRequest::class);
+$request = $container->get(HttpRequest::class);
+print_r($request);
 //
 $response->send();
 echo $app->getBasePath();

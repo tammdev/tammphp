@@ -6,8 +6,9 @@ namespace Tamm\Core\Skelton;
 
 use Tamm\Core\Annotations\RestControllerAnnotationHandler;
 
-use Tamm\Core\Skelton\Application;
+use Tamm\Application;
 use Tamm\Core\Skelton\Container;
+use Tamm\Core\Skelton\HttpRequest;
 
 // The only way we can get an object from Bootstrap class
 // by the method build inside the Application class.
@@ -83,21 +84,21 @@ class Bootstrap
         return $this->application;
     }
 
-    //
-    public function loadControllersFromModules() {
-        $path = "modules";
-        $modulesPath = rtrim($path, '/') . '/';
-        $modules = glob($modulesPath . '*', GLOB_ONLYDIR);
+    // //
+    // public function loadControllersFromModules() {
+    //     $path = "modules";
+    //     $modulesPath = rtrim($path, '/') . '/';
+    //     $modules = glob($modulesPath . '*', GLOB_ONLYDIR);
     
-        foreach ($modules as $module) {
-            $moduleControllersPath = $module . '/controllers';
-            $controllers = glob($moduleControllersPath . '/*_controller.php');
+    //     foreach ($modules as $module) {
+    //         $moduleControllersPath = $module . '/controllers';
+    //         $controllers = glob($moduleControllersPath . '/*_controller.php');
     
-            foreach ($controllers as $controller) {
-                require_once $controller;
-            }
-        }
-    }
+    //         foreach ($controllers as $controller) {
+    //             require_once $controller;
+    //         }
+    //     }
+    // }
 
     public function handleHttpRequest(){
 
@@ -105,6 +106,12 @@ class Bootstrap
         
         // Retrieve the HTTP method
         $method = $_SERVER['REQUEST_METHOD'];
+
+        //
+        $host = $_SERVER['HTTP_HOST'];
+
+        //
+        $port = $_SERVER['SERVER_PORT'];
     
         // Retrieve the URI
         $uri = $_SERVER['REQUEST_URI'];
@@ -125,7 +132,15 @@ class Bootstrap
         }
     
         // Create an instance of the HttpRequest class
-        $request = new HttpRequest($method, $uri, $headers, $body, $params);
+        $request = HttpRequest::builder()
+                    ->withPort($port)
+                    ->withHost($host)
+                    ->withUri($uri)
+                    ->withHeaders($headers)
+                    ->withParams($params)
+                    ->withBody($body)
+                    ->build();
+        // ($method, $uri, $headers, $body, $params);
     
         //
         $this->container->set($request);

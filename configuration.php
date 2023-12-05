@@ -2,6 +2,7 @@
 
 $configurations = array(
     'base_path' => '/tammphp/', // '/'
+    'debug' => true,
     'middlewares' => array(
         'Tamm\Middleware\LoggingMiddleware',
     ),

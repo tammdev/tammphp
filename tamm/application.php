@@ -1,20 +1,26 @@
 <?php
 
-namespace Tamm\Core\Skelton;
+namespace Tamm;
 
-require_once(__DIR__.'/bootstrap.php');
+require_once(__DIR__.'/core/skelton/bootstrap.php');
 
 use Tamm\Core\Skelton\Bootstrap;
 use Tamm\Core\Skelton\Container;
 use Tamm\Core\Skelton\Orienter;
 use Tamm\Core\Skelton\HttpRequest;
 use Tamm\Core\Skelton\HttpResponse;
+use Tamm\Core\Skelton\IMiddleware;
+
+//
+use Tamm\Core\Debug\ErrorHandler;
 
 /**
  * Class Application
- *
+ * 
+ * 
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
  * @package Tamm\Core\Skelton
+ * @note Applies a facade pattern
  */
 class Application {
 
@@ -31,7 +37,7 @@ class Application {
     //
     private Orienter $orinter;
     //
-    private $configuration;
+    private static $configuration;
     //
     private $middlewares = [];
 
@@ -40,7 +46,7 @@ class Application {
     private function __construct($configuration = array())
     {
 
-        $this->configuration       = $configuration;
+        self::$configuration       = $configuration;
 
         $dir = dirname(__DIR__);
         $this->basePath = $configuration['base_path'];
@@ -59,6 +65,9 @@ class Application {
         self::$container = self::$bootstrap->getContainer();
 
         //
+        self::$container->set(new ErrorHandler());
+
+        //
         self::$container->set(new Orienter());
 
         //
@@ -66,8 +75,13 @@ class Application {
     }
 
     //
-    public function getContainer(){
-        return $this->container;
+    public static function getContainer(){
+        return self::$container;
+    }
+
+    //
+    public static function getBootstrap(){
+        return self::$bootstrap;
     }
 
     //
@@ -78,6 +92,30 @@ class Application {
     //
     public function getRootPath(){
         return $this->rootPath;
+    }
+
+    // $key maybe "base_path" or "database/host"
+    public static function getConfigurationValue($key, $target = array()) {
+        if (empty($target)) {
+            $target = self::$configuration;
+        }
+    
+        $keys = explode('/', $key);
+        $currentKey = array_shift($keys);
+    
+        foreach ($target as $key => $item) {
+            if ($key === $currentKey) {
+                if (empty($keys)) {
+                    // Reached the final key
+                    return $item;
+                } elseif (is_array($item)) {
+                    // Continue searching in the child array
+                    return self::getConfigurationValue(implode('/', $keys), $item);
+                }
+            }
+        }
+    
+        return null;
     }
 
     public function addMiddleware(IMiddleware $middleware) {
@@ -110,7 +148,7 @@ class Application {
     }
 
     public function run(){
-        self::$bootstrap->loadControllersFromModules();
+        // self::$bootstrap->loadControllersFromModules();
         self::$bootstrap->handleHttpRequest(self::$container);
 
         // // Create a closure representing the final application logic
