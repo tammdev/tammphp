@@ -2,7 +2,7 @@
 
 $configurations = array(
     'base_path' => '/tammphp/', // '/'
-    'debug' => true,
+    'debug' => false,
     'middlewares' => array(
         'Tamm\Middleware\LoggingMiddleware',
     ),
@@ -17,5 +17,5 @@ $configurations = array(
         'prefix' => 'tm_',
     ),
     'theme' => 'assas',
-    'modules' => array('account','check','l10n')
+    'modules' => array('account','l10n')
 );

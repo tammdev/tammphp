@@ -2,24 +2,24 @@
 
 namespace Tamm;
 
-require_once(__DIR__.'/core/skelton/bootstrap.php');
+require_once(__DIR__.'/framework/core/bootstrap.php');
 
-use Tamm\Core\Skelton\Bootstrap;
-use Tamm\Core\Skelton\Container;
-use Tamm\Core\Skelton\Orienter;
-use Tamm\Core\Skelton\HttpRequest;
-use Tamm\Core\Skelton\HttpResponse;
-use Tamm\Core\Skelton\IMiddleware;
+use Tamm\Framework\Core\Bootstrap;
+use Tamm\Framework\Core\Container;
+use Tamm\Framework\Core\Orienter;
+// use Tamm\Framework\Skelton\HttpRequest;
+use Tamm\Framework\Web\HttpResponse;
+use Tamm\Framework\Skelton\Middleware\IMiddleware;
 
 //
-use Tamm\Core\Debug\ErrorHandler;
+use Tamm\Framework\Skelton\Web\IRequest;
 
 /**
  * Class Application
  * 
  * 
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Core\Skelton
+ * @package Tamm\Framework\Skelton
  * @note Applies a facade pattern
  */
 class Application {
@@ -35,7 +35,7 @@ class Application {
     //
     private static Container $container;
     //
-    private Orienter $orinter;
+    // private static Orienter $orienter;
     //
     private static $configuration;
     //
@@ -51,7 +51,7 @@ class Application {
         $dir = dirname(__DIR__);
         $this->basePath = $configuration['base_path'];
         $path = explode($this->basePath, $dir);
-        $this->rootPath = $path[0].$this->basePath;
+        $this->rootPath = $path[0].'/'; //.$this->basePath;
         
         // $this->bootstrap        = new Bootstrap();
         // $this->container        = new Container();
@@ -63,13 +63,10 @@ class Application {
     public static function build($configuration = array()){
         self::$bootstrap = new Bootstrap(new self($configuration));
         self::$container = self::$bootstrap->getContainer();
+        //
 
         //
-        self::$container->set(new ErrorHandler());
-
-        //
-        self::$container->set(new Orienter());
-
+        self::$bootstrap->booting();
         //
         return self::$bootstrap->getApplication();
     }
@@ -82,6 +79,11 @@ class Application {
     //
     public static function getBootstrap(){
         return self::$bootstrap;
+    }
+
+    //
+    public static function getOrienter(){
+        return self::$container->get(Orienter::class);
     }
 
     //
@@ -122,34 +124,41 @@ class Application {
         $this->middlewares[] = $middleware;
     }
 
-    public function handleRequest(HttpRequest $request) {
-        // Create a closure representing the final application logic
-        $applicationLogic = function (HttpRequest $request) {
-            // Process the request and generate a response
-            $response = new HttpResponse(200,array(),"Hellow");
-            return $response;
-        };
+    // public function handleRequest(IRequest $request) {
+    //     // // Create a closure representing the final application logic
+    //     // $applicationLogic = function (IRequest $request) {
+    //     //     // Process the request and generate a response
+    //     //     $response = new HttpResponse(200,array(),"Hellow");
+    //     //     return $response;
+    //     // };
 
-        // Build the middleware stack in reverse order
-        $middlewares = array_reverse($this->middlewares);
+    //     // // Build the middleware stack in reverse order
+    //     // $middlewares = array_reverse($this->middlewares);
 
-        // Wrap the application logic with each middleware in the stack
-        foreach ($middlewares as $middleware) {
-            $applicationLogic = function (HttpRequest $request) use ($middleware, $applicationLogic) {
-                return $middleware->process($request, $applicationLogic);
-            };
-        }
+    //     // // Wrap the application logic with each middleware in the stack
+    //     // foreach ($middlewares as $middleware) {
+    //     //     $applicationLogic = function (IRequest $request) use ($middleware, $applicationLogic) {
+    //     //         return $middleware->process($request, $applicationLogic);
+    //     //     };
+    //     // }
 
-        // Start the request processing with the outermost middleware
-        $response = $applicationLogic($request);
+    //     // // Start the request processing with the outermost middleware
+    //     // $response = $applicationLogic($request);
 
-        // Return the final response
-        return $response;
-    }
+    //     // // Return the final response
+    //     // return $response;
+    //     return null;
+    // }
 
     public function run(){
         // self::$bootstrap->loadControllersFromModules();
-        self::$bootstrap->handleHttpRequest(self::$container);
+        self::$bootstrap->handleHttpRequest();
+
+        $irequest = self::$container->resolve(IRequest::class);
+        $request = self::$container->get($irequest);
+        //
+        $orienter = $this->getOrienter();
+        $orienter->handleRequest($request);
 
         // // Create a closure representing the final application logic
         // $applicationLogic = function (HttpRequest $httpRequest) {
@@ -166,14 +175,14 @@ class Application {
         // $response = $applicationLogic(self::$container->get(HttpRequest::class));
         
 
-        // $response = self::$container->get(HttpRequest::class);
-        $statusCode = 200; 
-        $headers = array(); 
-        $body = "Test the request";
-        $response = new HttpResponse($statusCode, $headers, $body);
+        // // $response = self::$container->get(HttpRequest::class);
+        // $statusCode = 200; 
+        // $headers = array(); 
+        // $body = "Test the request";
+        // $response = new HttpResponse($statusCode, $headers, $body);
 
-        // Return the final response
-        return $response;
+        // // Return the final response
+        // return $response;
 
     }
 }

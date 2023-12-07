@@ -1,4 +1,5 @@
 zfolder/
+./configuration.php
 
 .idea
 vendor

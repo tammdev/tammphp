@@ -2,10 +2,10 @@
 
 namespace Tamm\Middleware;
 
-use Tamm\Core\HttpRequest;
-use Tamm\Core\IMiddleware;
-use Tamm\Core\Closure;
-use Tamm\Core\Log;
+use Tamm\Framework\HttpRequest;
+use Tamm\Framework\IMiddleware;
+use Tamm\Framework\Closure;
+use Tamm\Framework\Log;
 
 class LoggingMiddleware implements IMiddleware {
     public function process(HttpRequest $request, Closure $next) {
