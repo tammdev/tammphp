@@ -12,22 +12,22 @@ use Modules\Rentalcars\Models\UpdateCarRequest;
 /**
  * @RestController
  */
-class CarController implements IController 
+class RoomController implements IController 
 {
     /**
-     * @Get("/cars")
+     * @Get("/rooms")
      */
     public function index(IRequest $request, IResponse $response) 
     {
-        echo "<h1>List all cars.</h1>";
+        echo "<h1>List all rooms.</h1>";
         echo "<pre>";
         print_r($request);
         echo "</pre>";
-        echo "<h1>Hello Tamm from rentalcars</h1>";
+        echo "<h1>Hello Tamm from bnb</h1>";
     }
 
     /**
-     * @Post("/cars")
+     * @Post("/rooms")
      */
     public function save(UpdateCarRequest $updateCar) 
     {
