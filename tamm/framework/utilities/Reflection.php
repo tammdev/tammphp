@@ -12,4 +12,9 @@ class Reflection
 
         return array_pop($tokens);
     }
+
+    public  static function hasAttribute(\ReflectionMethod $reflectionMethod, string $attributeName) : bool
+    {
+        return count($reflectionMethod->getAttributes($attributeName)) > 0;
+    }
 }
