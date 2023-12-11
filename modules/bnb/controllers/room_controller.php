@@ -2,10 +2,8 @@
 
 namespace Modules\Rentalcars\Controllers;
 
-use Tamm\Application;
 use Tamm\Framework\Skeleton\Core\IController;
 use Tamm\Framework\Skeleton\Web\IRequest;
-use Tamm\Framework\Skeleton\Web\IRequestModel;
 use Tamm\Framework\Skeleton\Web\IResponse;
 use Modules\Rentalcars\Models\UpdateCarRequest;
 

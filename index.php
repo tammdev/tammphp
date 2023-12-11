@@ -40,5 +40,3 @@ $container = Application::getContainer();
 // // $response->send();
 // echo $app->getBasePath();
 // echo $app->getRootPath();
-
-
