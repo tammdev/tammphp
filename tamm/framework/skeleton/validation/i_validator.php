@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Framework\Skelton\Validation;
+namespace Tamm\Framework\Skeleton\Validation;
 
 interface IValidator{
     public function getName() : string;

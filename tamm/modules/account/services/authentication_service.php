@@ -3,9 +3,9 @@
 namespace Tamm\Modules\Account\Services;
 
 use Tamm\Application;
-use Tamm\Framework\Skelton\Security\IAuthentication;
-use Tamm\Framework\Skelton\Security\ISecurity;
-use Tamm\Framework\Skelton\Security\ISession;
+use Tamm\Framework\Skeleton\Security\IAuthentication;
+use Tamm\Framework\Skeleton\Security\ISecurity;
+use Tamm\Framework\Skeleton\Security\ISession;
 
 // Authentication service
 class AuthenticationService implements IAuthentication

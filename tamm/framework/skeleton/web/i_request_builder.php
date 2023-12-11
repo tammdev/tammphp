@@ -1,12 +1,12 @@
 <?php
 
-namespace Tamm\Framework\Skelton\Web;
+namespace Tamm\Framework\Skeleton\Web;
 
 /**
  * Interface IRequestBuilder
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton\Web
+ * @package Tamm\Framework\Skeleton\Web
  */
 
 interface IRequestBuilder 

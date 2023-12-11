@@ -2,8 +2,8 @@
 
 namespace Tamm\Framework\Web;
 
-use Tamm\Framework\Skelton\Web\IRequest;
-use Tamm\Framework\Skelton\Web\IRequestBuilder;
+use Tamm\Framework\Skeleton\Web\IRequest;
+use Tamm\Framework\Skeleton\Web\IRequestBuilder;
 use Tamm\Framework\Web\HttpRequestBuilder;
 
 /**

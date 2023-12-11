@@ -2,7 +2,7 @@
 
 namespace Tamm\Framework\Validation;
 
-use Tamm\Framework\Skelton\Validation\IValidator;
+use Tamm\Framework\Skeleton\Validation\IValidator;
 
 class MinValidator implements IValidator {
 

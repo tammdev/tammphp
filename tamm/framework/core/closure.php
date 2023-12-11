@@ -7,7 +7,7 @@ namespace Tamm\Framework\Core;
  * Class Closure
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton
+ * @package Tamm\Framework\Skeleton
  */
 class Closure {
     private $callable;

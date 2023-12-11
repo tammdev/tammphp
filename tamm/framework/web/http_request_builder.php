@@ -2,15 +2,15 @@
 
 namespace Tamm\Framework\Web;
 
-use Tamm\Framework\Skelton\Web\IRequest;
-use Tamm\Framework\Skelton\Web\IRequestBuilder;
+use Tamm\Framework\Skeleton\Web\IRequest;
+use Tamm\Framework\Skeleton\Web\IRequestBuilder;
 use Tamm\Framework\Web\HttpRequest;
 
 /**
  * Class HttpRequestBuilder
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton
+ * @package Tamm\Framework\Skeleton
  */
 
  class HttpRequestBuilder implements IRequestBuilder 

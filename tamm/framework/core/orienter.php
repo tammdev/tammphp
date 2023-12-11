@@ -3,7 +3,7 @@
 namespace Tamm\Framework\Core;
 
 use Tamm\Application;
-use Tamm\Framework\Skelton\Web\IRequest;
+use Tamm\Framework\Skeleton\Web\IRequest;
 
 /**
  * Class Orienter

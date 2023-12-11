@@ -2,12 +2,12 @@
 
 namespace Tamm\Framework\Security;
 
-use Tamm\Framework\Skelton\Security\ISecurity;
-use Tamm\Framework\Skelton\Security\IUser;
-use Tamm\Framework\Skelton\Security\IRole;
-use Tamm\Framework\Skelton\Security\IPermission;
-use Tamm\Framework\Skelton\Security\IAuthentication;
-use Tamm\Framework\Skelton\Security\IAuthorization;
+use Tamm\Framework\Skeleton\Security\ISecurity;
+use Tamm\Framework\Skeleton\Security\IUser;
+use Tamm\Framework\Skeleton\Security\IRole;
+use Tamm\Framework\Skeleton\Security\IPermission;
+use Tamm\Framework\Skeleton\Security\IAuthentication;
+use Tamm\Framework\Skeleton\Security\IAuthorization;
 
 class Security implements ISecurity {
     public function generateToken(string $text){

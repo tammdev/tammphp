@@ -6,9 +6,9 @@ namespace Tamm\Framework\Core;
 
 use Tamm\Application;
 use Tamm\Framework\Core\Container;
-use Tamm\Framework\Skelton\Core\IController;
-use Tamm\Framework\Skelton\Web\IRequest;
-use Tamm\Framework\Skelton\Web\IRequestBuilder;
+use Tamm\Framework\Skeleton\Core\IController;
+use Tamm\Framework\Skeleton\Web\IRequest;
+use Tamm\Framework\Skeleton\Web\IRequestBuilder;
 use Tamm\Framework\Web\HttpRequest;
 use Tamm\Framework\Web\HttpRequestBuilder;
 
@@ -23,7 +23,7 @@ use Tamm\Modules\Check\Controllers\CheckController;
  * Class Bootstrap
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton
+ * @package Tamm\Framework\Skeleton
  */
 class Bootstrap
 {
