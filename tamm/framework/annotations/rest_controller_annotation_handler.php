@@ -2,74 +2,106 @@
 
 namespace Tamm\Framework\Annotations;
 
-
-// use ReflectionClass;
 use Tamm\Application;
+use tamm\framework\annotations\Attributes\Get;
+use tamm\framework\annotations\Attributes\RestController;
+use Tamm\Framework\Utilities\Reflection;
 
-class RestControllerAnnotationHandler {
+class RestControllerAnnotationHandler
+{
+    private const controllerName = 'RestController';
 
-    public function handleAnnotations($className) {
-        $reflector = new \ReflectionClass($className);
-        $orienter = Application::getOrienter();
-        // Check if the class has the @RestController annotation
-        if ($this->hasAnnotation($reflector, 'RestController')) {
-            $methods = $reflector->getMethods();
+    public function handleAnnotations($className)
+    {
+        $reflectionClass = new \ReflectionClass($className);
+        if ($reflectionClass->getAttributes(RestController::class))
+        {
+            $this->addRouteFromAttributesAnnotations($reflectionClass);
+        }
+        elseif ($this->hasAnnotation($reflectionClass, self::controllerName))
+        {
+            //Get annotations from docs though @RestController, @Get("/route")
+            $this->addRouteFromDocsAnnotations($reflectionClass);
+        }
+    }
 
-            foreach ($methods as $callback) {
-                
-                $route = $this->getRouteFromAnnotation($callback);
+    private function addRouteFromAttributesAnnotations(\ReflectionClass $reflectionClass)
+    {
+        $methods = $reflectionClass->getMethods();
 
-                // Skip methods without a route annotation
-                if (!$route) {
+        foreach ($methods as $method)
+        {
+            $attributes = $method->getAttributes(Get::class);
+
+            if (count($attributes) == 0)
+            {
+                continue;
+            }
+
+            $route = $attributes[0]->getArguments()[0];
+            $controllerName = $reflectionClass->getName();
+            $actionName = $method->getName();
+            $httpMethod = strtoupper(Reflection::getClassName($attributes[0]->getName()));
+            $args = $this->getParameterNames($method);
+
+            Application::getOrienter()->addRoute($route, $controllerName, $httpMethod, $actionName, $args);
+        }
+    }
+
+    private function addRouteFromDocsAnnotations(\ReflectionClass $reflectionClass)
+    {
+        $methods = $reflectionClass->getMethods();
+
+        foreach ($methods as $method)
+{
+                if (!$this->getRouteFromAnnotation($method))
+                {
                     continue;
                 }
 
-                $method = $this->getHttpMethodFromAnnotation($callback);
+                $route = $this->getRouteFromAnnotation($method);
+            $controllerName = $reflectionClass->getName();
+            $actionName = $method->getName();
+            $httpMethod = $this->getHttpMethodFromAnnotation($method);
+            $args = $this->getParameterNames($method);
 
-                //
-                $args = array();
-                // Get the callback parameters
-                $parameters = $callback->getParameters();
-                foreach($parameters as $parameter)
-                {
-                    $parameterType = $parameter->getType();
-                    // Check if the parameter has a type declaration
-                    if ($parameterType !== null) {
-                        if ($parameterType instanceof \ReflectionNamedType) {
-                            $args[] = $parameterType->getName();
-                        }
-                    }
-                    // print_r($parameter->getType()->name);
+            Application::getOrienter()->addRoute($route, $controllerName, $httpMethod, $actionName, $args);
+        }
+    }
+
+    private function getParameterNames(\ReflectionMethod $reflectionMethod)
+    {
+        $params = [];
+        foreach($reflectionMethod->getParameters() as $parameter)
+        {
+            $parameterType = $parameter->getType();
+            if ($parameterType !== null) {
+                if ($parameterType instanceof \ReflectionNamedType) {
+                    $params[] = $parameterType->getName();
                 }
-
-                // // Handle the route and http method
-                // $this->handleRoute($route, $httpMethod);
-
-                //
-                $orienter->addRoute($route, $className, $method, $callback->getName(), $args);
             }
         }
+
+        return $params;
     }
 
     private function hasAnnotation($reflector, $annotationName) {
         $docComment = $reflector->getDocComment();
+
         return strpos($docComment, "@" . $annotationName) !== false;
     }
 
     private function getRouteFromAnnotation($method) {
         $docComment = $method->getDocComment();
         preg_match('/@([A-Za-z]+)\("([^"]+)"/', $docComment, $matches);
+
         return isset($matches[2]) ? $matches[2] : null;
     }
 
     private function getHttpMethodFromAnnotation($method) {
         $docComment = $method->getDocComment();
         preg_match('/@([A-Za-z]+)\("([^"]+)"/', $docComment, $matches);
+
         return isset($matches[1]) ? strtoupper($matches[1]) : null;
     }
-
-    // private function handleRoute($route, $httpMethod) {
-    //     // Handle the route and http method as needed
-    //     echo "Route: $route, Method: $httpMethod\n";
-    // }
 }

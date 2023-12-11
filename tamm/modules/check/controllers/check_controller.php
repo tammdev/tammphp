@@ -4,18 +4,16 @@ namespace Tamm\Modules\Check\Controllers;
 
 
 use Tamm\Application;
+use tamm\framework\Annotations\Attributes\Get;
+use tamm\framework\Annotations\Attributes\RestController;
 use Tamm\Framework\Skeleton\Core\IController;
 use Tamm\Framework\Skeleton\Web\IRequest;
 
 
-/**
- * @RestController
- */
+#[RestController]
 class CheckController implements IController 
 {
-    /**
-     * @Get("/hello")
-     */
+    #[Get("/hello")]
     public function index() 
     {
         echo "<h1>Hello Tamm from Check.</h1>";
@@ -28,9 +26,7 @@ class CheckController implements IController
         echo "<br><br>Done.";
     }
 
-    /**
-     * @Get("/cars")
-     */
+    #[Get("/cars")]
     public function cars()
     {
         echo "<h1>All Cars goes here.....</h1>";
