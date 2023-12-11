@@ -10,14 +10,7 @@ namespace Tamm\Framework\Skeleton\Web;
  */
 
 interface IRequest {
-    //
-    public function setMethod($method);
-    public function setHost($host);
-    public function setPort($port);
-    public function setUri($uri);
-    public function setHeaders($headers);
-    public function setBody($body);
-    public function setParams($params);
+    public static function getInstance();
     //
     public function getMethod();
     public function getHost();
@@ -25,7 +18,6 @@ interface IRequest {
     public function getUri();
     public function getHeaders();
     public function getBody();
-    public function getParams();
-    //
-    public static function builder() : IRequestBuilder;
+    public function getQueryParams();
+    
 }

@@ -17,5 +17,5 @@ $configurations = array(
         'prefix' => 'tm_',
     ),
     'theme' => 'assas',
-    'modules' => array('account','check','l10n')
+    'modules' => array('tamm/system','tamm/account','tamm/l10n','rentalcars')
 );

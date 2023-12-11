@@ -2,25 +2,27 @@
 
 namespace Tamm\Framework\Web;
 
+use Tamm\Framework\Skeleton\Web\IResponse;
+
 /**
  * Class HttpResponse
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
  * @package Tamm\Framework\Web
  */
-class HttpResponse
+class HttpResponse implements IResponse
 {
     private $statusCode;
     private $headers;
     private $body;
     // private $messages = array();
 
-    public function __construct($statusCode, $headers, $body)
-    {
-        $this->statusCode = $statusCode;
-        $this->headers = $headers;
-        $this->body = $body;
-    }
+    // public function __construct($statusCode, $headers, $body)
+    // {
+    //     $this->statusCode = $statusCode;
+    //     $this->headers = $headers;
+    //     $this->body = $body;
+    // }
 
     public function getStatusCode()
     {

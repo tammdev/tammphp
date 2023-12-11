@@ -14,6 +14,8 @@ use Tamm\Framework\Web\HttpRequestBuilder;
 
 use Tamm\Framework\Annotations\RestControllerAnnotationHandler;
 use Tamm\Framework\Debug\ErrorHandler;
+use Tamm\Framework\Skeleton\Web\IResponse;
+use Tamm\Framework\Web\HttpResponse;
 use Tamm\Modules\Check\Controllers\CheckController;
 
 // The only way we can get an object from Bootstrap class
@@ -62,13 +64,15 @@ class Bootstrap
         $this->container->set(new ErrorHandler());
 
         //
-        $this->container->set(new Orienter());
-
-        //
         $this->container->set(new RestControllerAnnotationHandler());
 
         //
-        $this->loadControllersFromModules();
+        $this->container->set(new Orienter());
+
+
+        //
+        $coreModules = $this->loadtargetModules();
+        $this->loadControllersFromTargetModules($coreModules);
         //
         $this->registerAllControllers();
     }
@@ -123,111 +127,67 @@ class Bootstrap
     }
 
     //
-    private function loadControllersFromModules() {
+    private function loadtargetModules() {
         
-        $path = "tamm/modules";
-        $modulesPath = $this->getApplication()->getRootPath() . rtrim($path, '/') . '/';
-        // print_r($modulesPath);
-        $modules = glob($modulesPath . '*', GLOB_ONLYDIR);
-        
+        $modulesPath = rtrim($this->getApplication()->getRootPath(), '/') . '/';
         $activeModules = Application::getConfigurationValue("modules");
+        // print_r($activeModules);
         $targetModules = array();
         foreach($activeModules as $activeModule)
         {
-            $targetModules[] = $modulesPath.$activeModule;
+            if(str_contains($activeModule,"/"))
+            {
+                // echo $activeModule;
+                $targetModules[] = $modulesPath.'tamm/modules/'.explode("/",$activeModule)[1];
+            }else{
+                $targetModules[] = $modulesPath.'modules/'.$activeModule;
+            }
         }
+
+        return $targetModules;
+    }
+    //
+    private function loadControllersFromTargetModules($targetModules = array()) {
+        // $path = $path . "modules";
+        // $modulesPath = rtrim($this->getApplication()->getRootPath(), '/') . rtrim($path, '/') . '/';
+        // // print_r($modulesPath);
+        // $modules = glob($modulesPath . '*', GLOB_ONLYDIR);
+        // // print_r($modules);
+        
+        // $activeModules = Application::getConfigurationValue("modules");
+        // $targetModules = array();
+        // foreach($activeModules as $activeModule)
+        // {
+        //     $targetModules[] = $modulesPath.$activeModule;
+        // }
         // print_r($modules);
         // print_r($activeModules);
-        foreach ($modules as $module) {
-            if(in_array($module,$targetModules))
-            {
+
+        
+        // print_r($modules);
+        foreach ($targetModules as $module) {
+            // echo $module;
+            // if(in_array($module,$targetModules))
+            // {
                 $moduleControllersPath = $module . '/controllers';
                 $controllers = glob($moduleControllersPath . '/*_controller.php');
         
                 foreach ($controllers as $controller) {
                     require_once $controller;
                 }
-            }
+            // }
         }
     }
 
     public function handleHttpRequest(){
-        // echo '<pre>';
-        // print_r($_SERVER);
-        // echo '</pre>';
-
-        // Parse the incoming HTTP request and create an instance of the HttpRequest class
-        
-        // Retrieve the HTTP method
-        $method = $_SERVER['REQUEST_METHOD'];
-
-        //
-        $host = $_SERVER['HTTP_HOST'];
-
-        //
-        $port = $_SERVER['SERVER_PORT'];
-    
-        // Retrieve the URI
-        $uri = "/".$_SERVER['REQUEST_URI'];
-        $basePath = Application::getConfigurationValue("base_path");
-        $uri = str_replace($basePath,"",$uri);
-    
-        // Retrieve the request headers
-        $headers = getallheaders();
-    
-        // Retrieve the request body
-        $body = file_get_contents('php://input');
-    
-        // Retrieve the request parameters
-        $params = array();
-        // Retrieve all URI parameters
-        $_params = $_GET;
-        // Iterate over the parameters
-        foreach ($_params as $name => $value) {
-            $params[$name] = $value;
-        }
-        
         //
         $this->container->bind(IRequest::class,HttpRequest::class);
         //
-        // $this->container->bind(IRequestBuilder::class,HttpRequestBuilder::class);
-
-        $requestConcrete = $this->container->resolve(IRequest::class);
-        
-
-        // Create an instance of the HttpRequest class
-        $request = $requestConcrete::builder()
-                    ->withMethod($method)
-                    ->withHost($host)
-                    ->withPort($port)
-                    ->withUri($uri)
-                    ->withHeaders($headers)
-                    ->withParams($params)
-                    ->withBody($body)
-                    ->build();
-        // ($method, $uri, $headers, $body, $params);
-
+        $this->container->set(HttpRequest::getInstance());
         //
-        $this->container->set($request);
-
-        // echo '<pre>';
-        // print_r($request);
-        // echo '</pre>';
-        
-
+        $this->container->bind(IResponse::class,HttpResponse::class);
         //
-        $this->container->set(new RestControllerAnnotationHandler());
-    
-    
-        // // Now you can access the different components of the request using the methods provided by the HttpRequest class
-    
-        // // Example usage:
-        // echo 'HTTP Method: ' . $request->getMethod() . '<br>';
-        // echo 'URI: ' . $request->getUri() . '<br>';
-        // echo 'Headers: ' . print_r($request->getHeaders(), true) . '<br>';
-        // echo 'Body: ' . $request->getBody() . '<br>';
-        // echo 'Params: ' . print_r($request->getParams(), true) . '<br>';
-    
+        $this->container->set(new HttpResponse());
     }
     
     

@@ -16,6 +16,7 @@ class RestControllerAnnotationHandler {
             $methods = $reflector->getMethods();
 
             foreach ($methods as $callback) {
+                
                 $route = $this->getRouteFromAnnotation($callback);
 
                 // Skip methods without a route annotation
@@ -25,11 +26,27 @@ class RestControllerAnnotationHandler {
 
                 $method = $this->getHttpMethodFromAnnotation($callback);
 
+                //
+                $args = array();
+                // Get the callback parameters
+                $parameters = $callback->getParameters();
+                foreach($parameters as $parameter)
+                {
+                    $parameterType = $parameter->getType();
+                    // Check if the parameter has a type declaration
+                    if ($parameterType !== null) {
+                        if ($parameterType instanceof \ReflectionNamedType) {
+                            $args[] = $parameterType->getName();
+                        }
+                    }
+                    // print_r($parameter->getType()->name);
+                }
+
                 // // Handle the route and http method
                 // $this->handleRoute($route, $httpMethod);
 
                 //
-                $orienter->addRoute($route, $className, $method, $callback->name);
+                $orienter->addRoute($route, $className, $method, $callback->getName(), $args);
             }
         }
     }

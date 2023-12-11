@@ -2,7 +2,10 @@
 
 namespace Tamm\Modules\Check\Controllers;
 
+
+use Tamm\Application;
 use Tamm\Framework\Skeleton\Core\IController;
+use Tamm\Framework\Skeleton\Web\IRequest;
 
 
 /**
@@ -11,11 +14,18 @@ use Tamm\Framework\Skeleton\Core\IController;
 class CheckController implements IController 
 {
     /**
-     * @Get("/checks")
+     * @Get("/hello")
      */
     public function index() 
     {
-        echo "<h1>Hello Tamm</h1>";
+        echo "<h1>Hello Tamm from Check.</h1>";
+        $container = Application::getContainer();
+        $irequest = $container->resolve(IRequest::class);
+        $request = $container->get($irequest);
+        echo "<pre>";
+        print_r($request);
+        echo "</pre>";
+        echo "<br><br>Done.";
     }
 
     /**

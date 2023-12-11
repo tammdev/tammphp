@@ -2,9 +2,8 @@
 
 namespace Tamm\Framework\Web;
 
+use Tamm\Application;
 use Tamm\Framework\Skeleton\Web\IRequest;
-use Tamm\Framework\Skeleton\Web\IRequestBuilder;
-use Tamm\Framework\Web\HttpRequestBuilder;
 
 /**
  * Class HttpRequest
@@ -14,102 +13,116 @@ use Tamm\Framework\Web\HttpRequestBuilder;
  */
 class HttpRequest implements IRequest
 {
-    private $method;
-    private $host;
-    private $port;
-    private $uri;
-    private $headers;
-    private $body;
-    private $params;
+    private static ?HttpRequest $instance = null;
+    private string $host;
+    private int $port;
+    private string $method;
+    private string $uri;
+    private array $headers;
+    private array $queryParams;
+    private string $body;
 
-    // public function __construct($method, $host, $port, $uri, $headers, $body, $params)
-    // {
-    //     $this->method = $method;
-    //     $this->host = $host;
-    //     $this->port = $port;
-    //     $this->uri = $uri;
-    //     $this->headers = $headers;
-    //     $this->body = $body;
-    //     $this->params = $params;
-    // }
-
-    protected function __construct()
+    private function __construct()
     {
-        
+        //
+        $this->host = $_SERVER['HTTP_HOST'] ?? null;
+        //
+        $this->port = $_SERVER['SERVER_PORT'] ?? null;
+        //
+        $this->method = $_SERVER['REQUEST_METHOD'] ?? null;
+        //
+        // Retrieve the URI
+        $uri = "/".$_SERVER['REQUEST_URI'];
+        $basePath = Application::getConfigurationValue("base_path");
+        $fullUri = str_replace($basePath,"",$uri);
+        $this->uri = explode('?',$fullUri)[0];
+        //
+        $headers = [];
+        foreach ($_SERVER as $key => $value) {
+            if (strpos($key, 'HTTP_') === 0) {
+                $headerKey = str_replace('HTTP_', '', $key);
+                $headerKey = str_replace('_', ' ', $headerKey);
+                $headerKey = ucwords(strtolower($headerKey));
+                $headerKey = str_replace(' ', '-', $headerKey);
+                $headers[$headerKey] = $value;
+            }
+        }
+        $this->headers = $headers;
+        //
+        $this->queryParams = $_GET;
+        //
+        $this->body = file_get_contents('php://input');
     }
 
-    public function setMethod($method)
-    {
-        $this->method = $method;
+    public static function getInstance(){
+        if(self::$instance === null){
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    public function setHost($host)
-    {
-        $this->host = $host;
-    }
-
+    /**
+     * Get request body data
+     *
+     * @return string|null
+     */
     public function getHost()
     {
         return $this->host;
     }
 
-    public function setPort($port)
-    {
-        $this->port = $port;
-    }
-
+    /**
+     * Get request body data
+     *
+     * @return int|null
+     */
     public function getPort()
     {
         return $this->port;
     }
 
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
+    /**
+     * Get the request method (GET, POST, etc.)
+     *
+     * @return string|null
+     */
+    public function getMethod() {
+        return $this->method;
     }
 
-    public function getUri()
-    {
+    /**
+     * Get the request URL
+     *
+     * @return string
+     */
+    public function getUri() {
         return $this->uri;
     }
 
-    public function setHeaders($headers)
-    {
-        $this->headers = $headers;
-    }
-
-    public function getHeaders()
-    {
+    /**
+     * Get request headers
+     *
+     * @return array
+     */
+    public function getHeaders() {
         return $this->headers;
     }
 
-    public function setBody($body)
-    {
-        $this->body = $body;
+    /**
+     * Get request query parameters
+     *
+     * @return array
+     */
+    public function getQueryParams() {
+        return $this->queryParams;
     }
 
-    public function getBody()
-    {
+    /**
+     * Get request body data
+     *
+     * @return string|null
+     */
+    public function getBody() {
         return $this->body;
-    }
-
-    public function setParams($params)
-    {
-        $this->params = $params;
-    }
-
-    public function getParams()
-    {
-        return $this->params;
-    }
-
-    public static function builder() : IRequestBuilder
-    {
-        return new HttpRequestBuilder(new self());
     }
 }
