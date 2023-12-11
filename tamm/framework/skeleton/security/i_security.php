@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Framework\Skelton\Security;
+namespace Tamm\Framework\Skeleton\Security;
 
 interface ISecurity {
     public function generateToken(string $text);

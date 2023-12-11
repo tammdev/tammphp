@@ -7,19 +7,19 @@ require_once(__DIR__.'/framework/core/bootstrap.php');
 use Tamm\Framework\Core\Bootstrap;
 use Tamm\Framework\Core\Container;
 use Tamm\Framework\Core\Orienter;
-// use Tamm\Framework\Skelton\HttpRequest;
+// use Tamm\Framework\Skeleton\HttpRequest;
 use Tamm\Framework\Web\HttpResponse;
-use Tamm\Framework\Skelton\Middleware\IMiddleware;
+use Tamm\Framework\Skeleton\Middleware\IMiddleware;
 
 //
-use Tamm\Framework\Skelton\Web\IRequest;
+use Tamm\Framework\Skeleton\Web\IRequest;
 
 /**
  * Class Application
  * 
  * 
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton
+ * @package Tamm\Framework\Skeleton
  * @note Applies a facade pattern
  */
 class Application {

@@ -9,7 +9,7 @@ use Tamm\Framework\Debug\Debug;
  * Class Container
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton
+ * @package Tamm\Framework\Skeleton
  */
 class Container
 {

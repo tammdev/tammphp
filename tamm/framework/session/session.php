@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Framework\Skelton;
+namespace Tamm\Framework\Skeleton;
 
 class DatabaseSessionHandler // implements SessionHandlerInterface
 {

@@ -2,10 +2,10 @@
 
 namespace Tamm\Modules\Account\Services;
 
-use Tamm\Framework\Skelton\IAuthorization;
-use Tamm\Framework\Skelton\IRole;
-use Tamm\Framework\Skelton\IPermission;
-// use Tamm\Framework\Skelton\ISession;
+use Tamm\Framework\Skeleton\IAuthorization;
+use Tamm\Framework\Skeleton\IRole;
+use Tamm\Framework\Skeleton\IPermission;
+// use Tamm\Framework\Skeleton\ISession;
 
 // Authorization service
 class AuthorizationService implements IAuthorization

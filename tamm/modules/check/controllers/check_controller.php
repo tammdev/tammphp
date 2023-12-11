@@ -2,7 +2,7 @@
 
 namespace Tamm\Modules\Check\Controllers;
 
-use Tamm\Framework\Skelton\Core\IController;
+use Tamm\Framework\Skeleton\Core\IController;
 
 
 /**

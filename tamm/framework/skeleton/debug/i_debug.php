@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Framework\Skelton\Debug;
+namespace Tamm\Framework\Skeleton\Debug;
 
 interface IDebug{
     public static function show();

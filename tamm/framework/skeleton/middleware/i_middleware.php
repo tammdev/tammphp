@@ -1,14 +1,14 @@
 <?php
 
-namespace Tamm\Framework\Skelton\Middleware;
+namespace Tamm\Framework\Skeleton\Middleware;
 
-use Tamm\Framework\Skelton\Web\IRequest;
+use Tamm\Framework\Skeleton\Web\IRequest;
 
 /**
  * Interface IMiddleware
  *
  * @author  Abdullah Sowailem <abdullah.sowailem@gmail.com>
- * @package Tamm\Framework\Skelton\Middleware
+ * @package Tamm\Framework\Skeleton\Middleware
  */
 
 interface IMiddleware {

@@ -2,7 +2,7 @@
 
 namespace Tamm\Framework\Debug;
 
-use Tamm\Framework\Skelton\Debug\IDebug;
+use Tamm\Framework\Skeleton\Debug\IDebug;
 
 class Debug implements IDebug
 {

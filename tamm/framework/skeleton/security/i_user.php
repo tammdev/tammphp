@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Framework\Skelton\Security;
+namespace Tamm\Framework\Skeleton\Security;
 
 interface IUser {
     public function getUserByUsername(string $username);
