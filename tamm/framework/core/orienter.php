@@ -55,6 +55,7 @@ class Orienter
                                 }
                             }
                             $content = $controller->$callback(...$args);
+                            // TODO Sending content to the view resolver.
                         }
                         // TODO after called a method.
                         return;
