@@ -12,7 +12,7 @@ use Tamm\Framework\Skeleton\Web\IRequestBuilder;
 use Tamm\Framework\Web\HttpRequest;
 use Tamm\Framework\Web\HttpRequestBuilder;
 
-use Tamm\Framework\Annotations\RestControllerAnnotationHandler;
+use Tamm\Framework\Annotations\CommentsAnnotationRouteProvider;
 use Tamm\Framework\Debug\ErrorHandler;
 use Tamm\Framework\Skeleton\Web\IResponse;
 use Tamm\Framework\Web\HttpResponse;
@@ -49,7 +49,7 @@ class Bootstrap
     private function registerAllControllers()
     {
         //
-        $clazzHandler = $this->container->get(RestControllerAnnotationHandler::class);
+        $clazzHandler = $this->container->get(CommentsAnnotationRouteProvider::class);
         //
         $classes = $this->container->getImplementingClasses(IController::class);
         //
@@ -64,7 +64,7 @@ class Bootstrap
         $this->container->set(new ErrorHandler());
 
         //
-        $this->container->set(new RestControllerAnnotationHandler());
+        $this->container->set(new CommentsAnnotationRouteProvider());
 
         //
         $this->container->set(new Orienter());
