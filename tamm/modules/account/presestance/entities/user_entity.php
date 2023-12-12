@@ -1,6 +1,6 @@
 <?php
 
-namespace Tamm\Modules\Account\Models;
+namespace Tamm\Modules\Account\Entities;
 
 /**
  * @Entity(table="users")
@@ -26,10 +26,10 @@ class UserEntity
      */
     private $email;
 
-    /**
-     * @OneToMany(targetEntity="Address", mappedBy="user")
-     */
-    private $addresses;
+    // /**
+    //  * @OneToMany(targetEntity="Address", mappedBy="user")
+    //  */
+    // private $addresses;
 
     // ... additional properties and methods ...
 }
