@@ -5,35 +5,52 @@ namespace Tamm\Framework\Utilities;
 // Create a class that will implement the interface dynamically
 class DynamicImplementation {
     // This method will implement the interface methods dynamically
-    public static function implementInterface(string $interfaceName) {
+    public static function implement(string $targetName) {
         // Create a reflection class for the interface
-        $reflectionInterface = new \ReflectionClass($interfaceName);
+        $reflectionTarget = new \ReflectionClass($targetName);
 
-        // Create a reflection class for the dynamic implementation class
-        $reflectionClass = new \ReflectionClass(self::class);
+        $newClass = "TammNewClass";
+        $classDeclaration = "";
+        $classDeclaration .= "use $targetName; ";
+        $targetNameArray = explode('\\',$targetName);
+        $targetName = end($targetNameArray);
+
+        $classDeclaration .= $reflectionTarget->isInterface()
+            ? "class $newClass implements $targetName { "
+            : "class $newClass extends $targetName { ";
+
+
 
         // Get the methods of the interface
-        $interfaceMethods = $reflectionInterface->getMethods();
+        $interfaceMethods = $reflectionTarget->getMethods();
 
         // Iterate through the interface methods
         foreach ($interfaceMethods as $interfaceMethod) {
-            $methodName = $interfaceMethod->getName();
-            $methodParameters = $interfaceMethod->getParameters();
+            // $methodName = $interfaceMethod->getName();
+            $returnType = $interfaceMethod->getReturnType();
+            // $methodParameters = $interfaceMethod->getParameters();
 
             // Create a dynamic method in the implementation class
             $methodBody = "/* Add your implementation code here */";
             $methodSignature = self::getMethodSignature($interfaceMethod);
-            $dynamicMethod = "public function $methodSignature { $methodBody }";
+            $dynamicMethod = "public function $methodSignature ";
+            if ($returnType !== null) {
+                $dynamicMethod .= " : $returnType";
+            }
+            $dynamicMethod .= "{ $methodBody } ";
 
-            // Create a method using the eval function
-            eval($dynamicMethod);
+            $classDeclaration .= $dynamicMethod;
+            
         }
+        $classDeclaration .= "}";
+        // Create a method using the eval function
+        eval($classDeclaration);
 
         // Create an instance of the dynamic implementation class
-        $dynamicImplementation = $reflectionClass->newInstance();
+        $dynamicImplementation = new $newClass();
 
         // Check if the created instance implements the interface
-        if ($reflectionInterface->isInstance($dynamicImplementation)) {
+        if ($reflectionTarget->isInstance($dynamicImplementation)) {
             return $dynamicImplementation;
         } else {
             throw new \Exception("Failed to implement the interface.");
@@ -48,7 +65,15 @@ class DynamicImplementation {
 
         foreach ($methodParameters as $parameter) {
             $parameterName = $parameter->getName();
-            $parameterList[] = "$$parameterName";
+            $parameterName = $parameter->getType()." $$parameterName";
+            if ($parameter->isDefaultValueAvailable()) {
+                $defaultValue = $parameter->getDefaultValue();
+                if (is_array($defaultValue)) {
+                    $parameterName .= " = array()";
+                }
+            }
+
+            $parameterList[] = $parameterName;
         }
 
         $parameters = implode(", ", $parameterList);
