@@ -50,11 +50,13 @@ class Orienter
                                     if (class_exists($arg)) {
                                         $args[] = new $arg();
                                     } else {
-                                        $args[] = DynamicImplementation::implementInterface($arg);
+                                        // TODO needs more attention
+                                        $args[] = DynamicImplementation::implement($arg);
                                     }
                                 }
                             }
                             $content = $controller->$callback(...$args);
+
                         }
                         // TODO after called a method.
                         return;
