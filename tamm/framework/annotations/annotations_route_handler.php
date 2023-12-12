@@ -7,7 +7,7 @@ use ReflectionClass;
 use Tamm\Application;
 use Tamm\Framework\Annotations\Attributes\RestController;
 
-class CommentsAnnotationsRouteProvider
+class AnnotationsRouteHandler
 {
     private array $annotationsProviders = [];
 
