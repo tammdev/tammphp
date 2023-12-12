@@ -1,6 +1,6 @@
 <?php
 
-namespace tamm\framework\Annotations\Attributes;
+namespace Tamm\Framework\Annotations\Attributes;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class Get

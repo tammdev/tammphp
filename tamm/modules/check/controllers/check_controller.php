@@ -4,8 +4,8 @@ namespace Tamm\Modules\Check\Controllers;
 
 
 use Tamm\Application;
-use tamm\framework\Annotations\Attributes\Get;
-use tamm\framework\Annotations\Attributes\RestController;
+use Tamm\Framework\Annotations\Attributes\Get;
+use Tamm\Framework\Annotations\Attributes\RestController;
 use Tamm\Framework\Skeleton\Core\IController;
 use Tamm\Framework\Skeleton\Web\IRequest;
 

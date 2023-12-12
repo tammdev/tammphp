@@ -2,9 +2,6 @@
 
 namespace Tamm\Framework\Annotations;
 
-require_once 'IAnnotationsRouteProvider.php';
-require_once 'AttributesAnnotationsRouteProvider.php';
-require_once 'DocsAnnotationsRouteProvider.php';
 
 use ReflectionClass;
 use Tamm\Application;
