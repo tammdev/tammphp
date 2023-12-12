@@ -7,8 +7,6 @@ require_once(__DIR__.'/framework/core/bootstrap.php');
 use Tamm\Framework\Core\Bootstrap;
 use Tamm\Framework\Core\Container;
 use Tamm\Framework\Core\Orienter;
-// use Tamm\Framework\Skeleton\HttpRequest;
-use Tamm\Framework\Web\HttpResponse;
 use Tamm\Framework\Skeleton\Middleware\IMiddleware;
 
 //
@@ -23,7 +21,6 @@ use Tamm\Framework\Skeleton\Web\IRequest;
  * @note Applies a facade pattern
  */
 class Application {
-
     //
     public const VERSION = "1.0.0";
     // "/var/www/html/tammphp/"
@@ -124,31 +121,6 @@ class Application {
         $this->middlewares[] = $middleware;
     }
 
-    // public function handleRequest(IRequest $request) {
-    //     // // Create a closure representing the final application logic
-    //     // $applicationLogic = function (IRequest $request) {
-    //     //     // Process the request and generate a response
-    //     //     $response = new HttpResponse(200,array(),"Hellow");
-    //     //     return $response;
-    //     // };
-
-    //     // // Build the middleware stack in reverse order
-    //     // $middlewares = array_reverse($this->middlewares);
-
-    //     // // Wrap the application logic with each middleware in the stack
-    //     // foreach ($middlewares as $middleware) {
-    //     //     $applicationLogic = function (IRequest $request) use ($middleware, $applicationLogic) {
-    //     //         return $middleware->process($request, $applicationLogic);
-    //     //     };
-    //     // }
-
-    //     // // Start the request processing with the outermost middleware
-    //     // $response = $applicationLogic($request);
-
-    //     // // Return the final response
-    //     // return $response;
-    //     return null;
-    // }
 
     public function run(){
         // self::$bootstrap->loadControllersFromModules();
@@ -160,29 +132,6 @@ class Application {
         $orienter = $this->getOrienter();
         $orienter->handleRequest($request);
 
-        // // Create a closure representing the final application logic
-        // $applicationLogic = function (HttpRequest $httpRequest) {
-        //     // Process the HttpRequest and generate a response
-        //     // @TODO
-        //     $statusCode = 200; 
-        //     $headers = array(); 
-        //     $body = "Test the request";
-        //     $response = new HttpResponse($statusCode, $headers, $body);
-        //     $response->setHeader('X-Framework','TammPHP '.self::VERSION);
-        //     return $response;
-        // };
-        // // Start the HttpRequest processing with the outermost middleware
-        // $response = $applicationLogic(self::$container->get(HttpRequest::class));
-        
-
-        // // $response = self::$container->get(HttpRequest::class);
-        // $statusCode = 200; 
-        // $headers = array(); 
-        // $body = "Test the request";
-        // $response = new HttpResponse($statusCode, $headers, $body);
-
-        // // Return the final response
-        // return $response;
-
     }
+
 }
