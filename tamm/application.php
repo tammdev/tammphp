@@ -3,13 +3,16 @@
 namespace Tamm;
 
 require_once(__DIR__.'/framework/core/bootstrap.php');
+require_once(__DIR__ . '/framework/hosting/i_hosting_environment.php');
+require_once(__DIR__ . '/framework/hosting/hosting_environment.php');
 
 use Tamm\Framework\Core\Bootstrap;
 use Tamm\Framework\Core\Container;
 use Tamm\Framework\Core\Orienter;
+use Tamm\Framework\Hosting\EnvironmentName;
+use Tamm\Framework\Hosting\IHostingEnvironment;
+use Tamm\Framework\Hosting\HostingEnvironment;
 use Tamm\Framework\Skeleton\Middleware\IMiddleware;
-
-//
 use Tamm\Framework\Skeleton\Web\IRequest;
 
 /**
@@ -21,7 +24,7 @@ use Tamm\Framework\Skeleton\Web\IRequest;
  * @note Applies a facade pattern
  */
 class Application {
-    //
+    public const DEAFULT_NAME = "Tamm";
     public const VERSION = "1.0.0";
     // "/var/www/html/tammphp/"
     public string $rootPath;
@@ -35,6 +38,8 @@ class Application {
     // private static Orienter $orienter;
     //
     private static $configuration;
+
+    public IHostingEnvironment $environment;
     //
     private $middlewares = [];
 
@@ -49,6 +54,10 @@ class Application {
         $this->basePath = $configuration['base_path'];
         $path = explode($this->basePath, $dir);
         $this->rootPath = $path[0].'/'; //.$this->basePath;
+
+        $applicationName = $configuration['application_name'] ?? self::DEAFULT_NAME;
+        $env = $configuration['env'] ?? EnvironmentName::$Development;
+        $this->environment = new HostingEnvironment($env, $applicationName);
         
         // $this->bootstrap        = new Bootstrap();
         // $this->container        = new Container();

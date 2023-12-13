@@ -1,8 +1,10 @@
 <?php
 
 $configurations = array(
+    'application_name' => 'Tamm',
     'base_path' => '/tammphp/', // '/'
     'debug' => true,
+    'env' => 'Development',
     'middlewares' => array(
         'Tamm\Middleware\LoggingMiddleware',
     ),
