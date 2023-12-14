@@ -9,11 +9,10 @@ require_once(__DIR__ . '/framework/hosting/hosting_environment.php');
 use Tamm\Framework\Core\Bootstrap;
 use Tamm\Framework\Core\Container;
 use Tamm\Framework\Core\Orienter;
-use Tamm\Framework\Hosting\EnvironmentName;
-use Tamm\Framework\Hosting\IHostingEnvironment;
-use Tamm\Framework\Hosting\HostingEnvironment;
 use Tamm\Framework\Skeleton\Middleware\IMiddleware;
 use Tamm\Framework\Skeleton\Web\IRequest;
+
+use Tamm\Framework\Hosting\IHostingEnvironment;
 
 /**
  * Class Application
@@ -38,8 +37,8 @@ class Application {
     // private static Orienter $orienter;
     //
     private static $configuration;
-
-    public IHostingEnvironment $environment;
+    //
+    private IHostingEnvironment $environment;
     //
     private $middlewares = [];
 
@@ -54,10 +53,6 @@ class Application {
         $this->basePath = $configuration['base_path'];
         $path = explode($this->basePath, $dir);
         $this->rootPath = $path[0].'/'; //.$this->basePath;
-
-        $applicationName = $configuration['application_name'] ?? self::DEAFULT_NAME;
-        $env = $configuration['env'] ?? EnvironmentName::$Development;
-        $this->environment = new HostingEnvironment($env, $applicationName);
         
         // $this->bootstrap        = new Bootstrap();
         // $this->container        = new Container();
@@ -100,6 +95,13 @@ class Application {
     //
     public function getRootPath(){
         return $this->rootPath;
+    }
+
+    //
+    public function getEnvironment() : IHostingEnvironment
+    {
+        $ienv = $this->getContainer()->resolve(IHostingEnvironment::class);
+        return $this->getContainer()->get($ienv);
     }
 
     // $key maybe "base_path" or "database/host"

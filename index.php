@@ -11,5 +11,5 @@ $app->run();
 
 $container = Application::getContainer();
 
-echo "<h1>Welcome to ".$app->environment->getApplicationName()."!!</h1>";
-echo "<!--You are running under '" .$app->environment->getName()."' environment.-->";
+echo "<h1>Welcome to ".$app->getEnvironment()->getApplicationName()."!!</h1>";
+echo "<!--You are running under '" .$app->getEnvironment()->getName()."' environment.-->";

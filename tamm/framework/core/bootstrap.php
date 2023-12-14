@@ -13,6 +13,11 @@ use Tamm\Framework\Debug\ErrorHandler;
 use Tamm\Framework\Skeleton\Web\IResponse;
 use Tamm\Framework\Web\HttpResponse;
 
+
+use Tamm\Framework\Hosting\EnvironmentName;
+use Tamm\Framework\Hosting\IHostingEnvironment;
+use Tamm\Framework\Hosting\HostingEnvironment;
+
 // The only way we can get an object from Bootstrap class
 // by the method build() inside the Application class.
 
@@ -45,6 +50,12 @@ class Bootstrap
         $this->container->set(new AnnotationsRouteHandler());
         //
         $this->container->set(new Orienter());
+        //
+        $this->container->bind(IHostingEnvironment::class, HostingEnvironment::class);
+        $applicationName = Application::getConfigurationValue('application_name') ?? Application::DEAFULT_NAME;
+        $env = $configuration['env'] ?? EnvironmentName::$Development;
+        // $this->environment = 
+        $this->container->set(new HostingEnvironment($env, $applicationName));
         //
         $coreModules = $this->loadTargetModules();
         $this->loadControllersFromTargetModules($coreModules);
